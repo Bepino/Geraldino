@@ -8,7 +8,7 @@ const client = new Discord.Client();
 
 client.once('ready', () => {
     console.log(`Ready as ${client.user.username}!`);
-    setInterval(function() {AreWeThere()})
+    setInterval(function() {AreWeThere()}, 5 *1000)
     
 });
 
@@ -18,7 +18,7 @@ function AreWeThere() {
     var currdate = Date.now.apply();
     var jsondate = Date.parse(DataSet.datum);
     console.log('------------------------------------------\nThe current time difference is: ' 
-                + ((currdate - jsondate)/3600000).toString() + '\n------------------------------------------');
+                + ((currdate - jsondate)/3600000).toString() + ' hours\n------------------------------------------');
 
     if(currdate - jsondate > 86400000) {
         ArchiveList();
