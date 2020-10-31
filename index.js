@@ -37,10 +37,10 @@ function GetZupan() {
             Zarazeni : response[2].PodaciDetaljno[19].broj_zarazenih
         }];
 
-        //If the time difference between now and JSON.date is under 19h
+        //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         let timespan = Date.now.apply() - Date.parse(data[0].Datum);
         console.log('(Zupanija) timespan is ' + timespan + 'ms\n---------------------------------------');
-        if(timespan < 68400000 && timespan > 40000)
+        if(timespan > 40000)
             return 0;
 
         SendBigMessage(false, data);
@@ -52,10 +52,6 @@ function GetZupan() {
 }
 
 function GetGlobal() {
-    /*
-    repetition protection goes here 
-    */
-
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
@@ -80,10 +76,10 @@ function GetGlobal() {
                 SlucajeviHrvatska : response[2].SlucajeviHrvatska, 
             }];
 
-        //If the time difference between now and JSON.date is under 19h
+        //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         let timespan = Date.now.apply() - Date.parse(data[0].Datum);
         console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
-        if(timespan < 68400000 && timespan > 40000)
+        if(timespan > 40000)
             return 0;
 
         SendBigMessage(true, data);
