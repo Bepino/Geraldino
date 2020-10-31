@@ -1,29 +1,25 @@
 const config = require('./config.json');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-var SentMessageToday = false;
-var SentMessageTodayZup = false;
 
 client.once('ready', () => {
     console.log(`Ready as ${client.user.username}!`);
     GetGlobal();
     GetZupan();
-    //setInterval(function() {GetGlobal(); /*GetZupan()*/}, 60 *1000);
+    setInterval(function() {GetGlobal(); GetZupan()}, 60*1000);
 });
 
 client.login(config.token);
 
 function GetZupan() {
-    /*
-    repetition protection goes here 
-    */
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
-    console.log('Getting list zupanije\n---------------------------------------');
+    console.log('(Zupanija )Getting list\n---------------------------------------');
 
     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     var xmlhttp = new XMLHttpRequest();
 
+    //The part that activates when ever it feels like it.
     xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         //console.log(this.responseText + '\n---------------------------------------');
@@ -41,8 +37,12 @@ function GetZupan() {
             Zarazeni : response[2].PodaciDetaljno[19].broj_zarazenih
         }];
 
-        console.log('Response data zupanije: \n' + data + '\n---------------------------------------');
-        
+        //If the time difference between now and JSON.date is under 19h
+        let timespan = Date.now.apply() - Date.parse(data[0].Datum);
+        console.log('(Zupanija) timespan is ' + timespan + 'ms\n---------------------------------------');
+        if(timespan < 68400000 && timespan > 40000)
+            return 0;
+
         SendBigMessage(false, data);
         }
     }; 
@@ -58,7 +58,7 @@ function GetGlobal() {
 
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
 
-    console.log('Getting list\n---------------------------------------');
+    console.log('(Hrvatska) Getting list\n---------------------------------------');
 
     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     var xmlhttp = new XMLHttpRequest();
@@ -80,9 +80,13 @@ function GetGlobal() {
                 SlucajeviHrvatska : response[2].SlucajeviHrvatska, 
             }];
 
-        console.log('Response data: \n' + data + '\n---------------------------------------');
-        
-        SendBigMessage(true, data)
+        //If the time difference between now and JSON.date is under 19h
+        let timespan = Date.now.apply() - Date.parse(data[0].Datum);
+        console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
+        if(timespan < 68400000 && timespan > 40000)
+            return 0;
+
+        SendBigMessage(true, data);
         }
     }; 
 
@@ -110,7 +114,7 @@ function SendBigMessage(flag, data) {
         var Aktivni = `Aktivni : ${morto} (${diffAktiv})`;
         var Novozarazeni = `Novozarazeni : ${data[0].SlucajeviHrvatska - data[1].SlucajeviHrvatska} (${diffnovo})`;
         var umrli = `Umrli : ${data[0].UmrliHrvatska} (${diffumrli})`;
-        send = `**Narodne Novine izdanje : ${data[0].Datum}**\n${Novozarazeni}\n${Aktivni}\n${umrli}`;
+        send = `**Narodne Novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Novozarazeni}\n${Aktivni}\n${umrli}`;
     }
     else {
         let diffAktiv = data[0].Aktivni - data[1].Aktivni;
@@ -128,10 +132,13 @@ function SendBigMessage(flag, data) {
         var Umrli = `Umrli : ${data[0].Umrli} (${diffUmrli})`;
         var Novozarazeni = `Novozarazeni : ${data[0].Zarazeni - data[1].Zarazeni} (${diffNovo})`;        
         var Aktivni = `Aktivni : ${data[0].Aktivni} (${diffAktiv})`;
-        send = `**Županijske novine izdanje : ${data[0].Datum}**\n${Aktivni}\n${Novozarazeni}\n${Umrli}`;
+        send = `**Županijske novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Aktivni}\n${Novozarazeni}\n${Umrli}`;
     }
 
-    console.log(send + '\n---------------------------------------');
-    //client.channels.cache.get('459666776054169602').send(send);
-    console.log('Sent message\n---------------------------------------');
+    let identifier = '(Zupanija)';
+    if(flag)
+        identifier = '(Hrvatska)';
+    //console.log(send + '\n---------------------------------------');
+    client.channels.cache.get('459666776054169602').send(send);
+    console.log(identifier + 'Sent message\n---------------------------------------');
 }
