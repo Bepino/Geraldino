@@ -4,6 +4,7 @@
   "description": "Geraldino botino packagino",
   "main": "index.js",
   "scripts": {
+    "start": "index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,9 +15,16 @@
     "geraldino"
   ],
   "author": "J.I (aka Bepino)",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "xmlhttprequest": "^1.8.0"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Bepino/Geraldino/issues"
   },
-  "homepage": "https://github.com/Bepino/Geraldino#readme"
+  "homepage": "https://github.com/Bepino/Geraldino#readme",
+  "engines": {
+    "node": "12.x"
+  }
 }
