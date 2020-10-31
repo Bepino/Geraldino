@@ -1,0 +1,22 @@
+{
+  "name": "gerald",
+  "version": "1.0.0",
+  "description": "Geraldino botino packagino",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bepino/Geraldino.git"
+  },
+  "keywords": [
+    "geraldino"
+  ],
+  "author": "J.I (aka Bepino)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bepino/Geraldino/issues"
+  },
+  "homepage": "https://github.com/Bepino/Geraldino#readme"
+}
