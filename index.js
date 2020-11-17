@@ -1,6 +1,6 @@
-const config = require('./config.json');
-const Discord = require('discord.js');
-const client = new Discord.Client();
+var config = require("./tokens.json");
+var Discord = require("discord.js");
+var client = new Discord.Client();
 
 client.once('ready', () => {
     console.log(`Ready as ${client.user.username}!`);
@@ -41,8 +41,8 @@ function GetZupan() {
         let timespan = Date.now.apply() - Date.parse(data[0].Datum);
         console.log('(Zupanija) timespan is ' + timespan + 'ms\n---------------------------------------');
         if(timespan > 40000)
-            return 0;
-
+        return 0;
+        
         SendBigMessage(false, data);
         }
     }; 
@@ -80,7 +80,7 @@ function GetGlobal() {
         let timespan = Date.now.apply() - Date.parse(data[0].Datum);
         console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
         if(timespan > 40000)
-            return 0;
+        return 0;
 
         SendBigMessage(true, data);
         }
@@ -101,7 +101,7 @@ function SendBigMessage(flag, data) {
 
         var diffnovo = (data[0].SlucajeviHrvatska - data[1].SlucajeviHrvatska) - (data[1].SlucajeviHrvatska - data[2].SlucajeviHrvatska);
         if(diffnovo > 0)
-            difnovo = '+' + difnovo.toString();
+            diffnovo = '+' + diffnovo.toString();
 
         var diffumrli = data[0].UmrliHrvatska - data[1].UmrliHrvatska;
         if(diffumrli > 0)

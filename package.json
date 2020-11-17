@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/Bepino/Geraldino#readme",
   "engines": {
-    "node": "12.x"
+    "vscode": "^1.22.0"
   }
 }
