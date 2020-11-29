@@ -2,16 +2,16 @@ var config = require("./tokens.json");
 var Discord = require("discord.js");
 var client = new Discord.Client();
 
-client.once('ready', () => {
+client.once('ready', () =>{
     console.log(`Ready as ${client.user.username}!`);
     GetGlobal();
     GetZupan();
-    setInterval(function() {GetGlobal(); GetZupan()}, 60*1000);
+    setInterval(function(){GetGlobal(); GetZupan()}, 60*1000);
 });
 
 client.login(config.token);
 
-function GetZupan() {
+function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
     console.log('(Zupanija )Getting list\n---------------------------------------');
@@ -20,10 +20,10 @@ function GetZupan() {
     var xmlhttp = new XMLHttpRequest();
 
     //The part that activates when ever it feels like it.
-    xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
+    xmlhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
         //console.log(this.responseText + '\n---------------------------------------');
-        let response = JSON.parse(this.responseText);
+        var response = JSON.parse(this.responseText);
         var data = [{
             Datum : response[0].Datum,
             Aktivni : response[0].PodaciDetaljno[19].broj_aktivni,
@@ -51,7 +51,7 @@ function GetZupan() {
     xmlhttp.send();
 }
 
-function GetGlobal() {
+function GetGlobal(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
@@ -68,16 +68,16 @@ function GetGlobal() {
             UmrliHrvatska : response[0].UmrliHrvatska,
             IzlijeceniHrvatska : response[0].IzlijeceniHrvatska,
             Datum : response[0].Datum
-            }, {
+            },{
             SlucajeviHrvatska : response[1].SlucajeviHrvatska, 
             UmrliHrvatska : response[1].UmrliHrvatska,
             IzlijeceniHrvatska : response[1].IzlijeceniHrvatska,
-            }, {
+            },{
                 SlucajeviHrvatska : response[2].SlucajeviHrvatska, 
             }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        let timespan = Date.now.apply() - Date.parse(data[0].Datum);
+        var timespan = Date.now.apply() - Date.parse(data[0].Datum);
         console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
         if(timespan > 40000)
         return 0;
@@ -90,9 +90,9 @@ function GetGlobal() {
     xmlhttp.send();
 }
 
-function SendBigMessage(flag, data) {
+function SendBigMessage(flag, data){
     var send = 'Something broke with the machine: 500 (idk)';
-    if(flag) {
+    if(flag){
         var morto = data[0].SlucajeviHrvatska - data[0].IzlijeceniHrvatska - data[0].UmrliHrvatska;
 
         var diffAktiv = morto - (data[1].SlucajeviHrvatska - data[1].IzlijeceniHrvatska - data[1].UmrliHrvatska);
@@ -112,16 +112,16 @@ function SendBigMessage(flag, data) {
         var umrli = `Umrli : ${data[0].UmrliHrvatska} (${diffumrli})`;
         send = `**Narodne Novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Novozarazeni}\n${Aktivni}\n${umrli}`;
     }
-    else {
-        let diffAktiv = data[0].Aktivni - data[1].Aktivni;
+    else{
+        var diffAktiv = data[0].Aktivni - data[1].Aktivni;
         if(diffAktiv > 0)
             diffAktiv = '+' + diffAktiv.toString();
 
-        let diffNovo = (data[0].Zarazeni - data[1].Zarazeni) - (data[1].Zarazeni - data[2].Zarazeni);
+        var diffNovo = (data[0].Zarazeni - data[1].Zarazeni) - (data[1].Zarazeni - data[2].Zarazeni);
         if(diffNovo > 0)
             diffNovo = '+' + diffNovo.toString();
 
-        let diffUmrli = data[0].Umrli - data[1].Umrli;
+        var diffUmrli = data[0].Umrli - data[1].Umrli;
         if(diffUmrli > 0)
             diffUmrli = '+' + diffUmrli.toString();
 
@@ -131,7 +131,7 @@ function SendBigMessage(flag, data) {
         send = `**Županijske novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Aktivni}\n${Novozarazeni}\n${Umrli}`;
     }
 
-    let identifier = '(Zupanija)';
+    var identifier = '(Zupanija)';
     if(flag)
         identifier = '(Hrvatska)';
     //console.log(send + '\n---------------------------------------');
