@@ -16,7 +16,8 @@
   ],
   "author": "J.I (aka Bepino)",
   "dependencies": {
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
     "xmlhttprequest": "^1.8.0"
   },
   "license": "MIT",

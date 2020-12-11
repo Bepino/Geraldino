@@ -1,6 +1,8 @@
-var config = require("./tokens.json");
+require('dotenv').config();
+const discord_token = process.env.discord_token;
 var Discord = require("discord.js");
 var client = new Discord.Client();
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 client.once('ready', () =>{
     console.log(`Ready as ${client.user.username}!`);
@@ -9,17 +11,27 @@ client.once('ready', () =>{
     setInterval(function(){GetGlobal(); GetZupan()}, 60*1000);
 });
 
-client.login(config.token);
+console.log(discord_token);
+client.login(discord_token);
+
+//Test command
+client.on('message', message => {
+
+    if (message.content === 'ping') {
+
+       message.reply('pong');
+
+       }
+
+});
 
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
     console.log('(Zupanija )Getting list\n---------------------------------------');
 
-    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-    var xmlhttp = new XMLHttpRequest();
-
     //The part that activates when ever it feels like it.
+    var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200){
         //console.log(this.responseText + '\n---------------------------------------');
@@ -56,9 +68,7 @@ function GetGlobal(){
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
 
-    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     var xmlhttp = new XMLHttpRequest();
-
     xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         //console.log(this.responseText + '\n---------------------------------------');
