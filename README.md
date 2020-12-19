@@ -1,3 +1,3 @@
 # Geraldino
 
-this thing do thing
+this thing currently not doing the thing
