@@ -13,7 +13,6 @@ client.once('ready', () =>{
 
 console.log(discord_token);
 client.login(discord_token);
-
 //Test command
 client.on('message', message => {
 
