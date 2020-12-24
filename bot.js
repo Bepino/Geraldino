@@ -50,6 +50,7 @@ function GetZupan(){
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         let timespan = Date.now.apply() - Date.parse(data[0].Datum);
+        console.log('Date.now():' +  Date.now.apply() + ' / Date.Json():' + Date.parse(data[0].Datum));
         console.log('(Zupanija) timespan is ' + timespan + 'ms\n---------------------------------------');
         if(timespan > 40000)
         return 0;
@@ -87,6 +88,7 @@ function GetGlobal(){
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         var timespan = Date.now.apply() - Date.parse(data[0].Datum);
+        console.log('Date.now():' +  Date.now.apply() + ' / Date.Json():' + Date.parse(data[0].Datum));
         console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
         if(timespan > 40000)
         return 0;
