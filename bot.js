@@ -24,6 +24,9 @@ client.on('message', message => {
 
 });
 
+//Glob var
+var IsZupSent = false;
+
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
@@ -49,10 +52,11 @@ function GetZupan(){
         }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        let timespan = Date.now.apply() - Date.parse(data[0].Datum);
-        console.log('Date.now():' +  Date.now.apply() + ' / Date.Json():' + Date.parse(data[0].Datum));
-        console.log('(Zupanija) timespan is ' + timespan + 'ms\n---------------------------------------');
-        if(timespan > 40000)
+        let the_time = new Date(Date.parse(data[0].Datum)).getDate();
+        let timespan = new Date().getDate() - the_time;
+        console.log('Date.now():' +  new Date().getDate() + ' / Date.Json():' + the_time);
+        console.log('(Zupanija) timespan is ' + timespan + 'day(s)\n---------------------------------------');
+        if(timespan <1)
         return 0;
         
         SendBigMessage(false, data);
@@ -87,10 +91,11 @@ function GetGlobal(){
             }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        var timespan = Date.now.apply() - Date.parse(data[0].Datum);
-        console.log('Date.now():' +  Date.now.apply() + ' / Date.Json():' + Date.parse(data[0].Datum));
-        console.log('(Hrvatska) timespan is ' + timespan + 'ms\n---------------------------------------');
-        if(timespan > 40000)
+        let the_time = new Date(Date.parse(data[0].Datum)).getDate();
+        let timespan = new Date().getDate() - the_time;
+        console.log('Date.now():' +  new Date().getDate() + ' / Date.Json():' + the_time);
+        console.log('(Zupanija) timespan is ' + timespan + 'day(s)\n---------------------------------------');
+        if(timespan <1)
         return 0;
 
         SendBigMessage(true, data);
