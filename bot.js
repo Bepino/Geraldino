@@ -55,7 +55,7 @@ function GetZupan(){
         let the_time = new Date(Date.parse(data[0].Datum)).getDate();
         let timespan = new Date().getDate() - the_time;
         console.log('Date.now():' +  new Date().getDate() + ' / Date.Json():' + the_time);
-        console.log('(Zupanija) timespan is ' + timespan + 'day(s)\n---------------------------------------');
+        console.log('(Zupanija) timespan is ' + timespan + ' day(s)\n---------------------------------------');
         if(timespan <1)
         return 0;
         
@@ -94,7 +94,7 @@ function GetGlobal(){
         let the_time = new Date(Date.parse(data[0].Datum)).getDate();
         let timespan = new Date().getDate() - the_time;
         console.log('Date.now():' +  new Date().getDate() + ' / Date.Json():' + the_time);
-        console.log('(Zupanija) timespan is ' + timespan + 'day(s)\n---------------------------------------');
+        console.log('(Hrvatska) timespan is ' + timespan + ' day(s)\n---------------------------------------');
         if(timespan <1)
         return 0;
 
