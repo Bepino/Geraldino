@@ -68,7 +68,7 @@ function GetZupan(){
 }
 
 //Glob var
-var LastGlobSent = new  new Date(Date.now());
+var LastGlobSent = new Date(Date.now());
 
 function GetGlobal(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
