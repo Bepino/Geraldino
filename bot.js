@@ -25,7 +25,7 @@ client.on('message', message => {
 });
 
 //Glob var
-var LastZupSent = new Date(Date.now.apply());
+var LastZupSent = new Date(Date.now());
 
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
@@ -56,7 +56,7 @@ function GetZupan(){
         let datespan = the_date - LastZupSent.getDate();
         console.log('Date.now():' + LastZupSent.getDate() + ' / Date.Json():' + the_date);
         console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-        if(true)
+        if(datespan < 1)
         return 0;
         
         SendBigMessage(false, data);
@@ -68,7 +68,7 @@ function GetZupan(){
 }
 
 //Glob var
-var LastGlobSent = new Date();
+var LastGlobSent = new  new Date(Date.now());
 
 function GetGlobal(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
@@ -112,7 +112,7 @@ function GetGlobal(){
 function SendBigMessage(flag, data){
     var send = 'Something broke with the machine: 500 (idk)';
     if(flag){
-        LastZupSent = Date().now;
+        LastGlobSent = new Date(Date.now());
 
         var morto = data[0].SlucajeviHrvatska - data[0].IzlijeceniHrvatska - data[0].UmrliHrvatska;
 
@@ -134,7 +134,7 @@ function SendBigMessage(flag, data){
         send = `**Narodne Novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Novozarazeni}\n${Aktivni}\n${umrli}`;
     }
     else{
-        LastGlobSent = Date().now;
+        LastZupSent = new Date(Date.now());
 
         var diffAktiv = data[0].Aktivni - data[1].Aktivni;
         if(diffAktiv > 0)
