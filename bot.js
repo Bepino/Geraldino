@@ -98,7 +98,8 @@ function GetGlobal(){
         let datespan = the_date - LastGlobSent.getDate();
         console.log('Date.now():' + LastGlobSent.getDate() + ' / Date.Json():' + the_date);
         console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-        if(datespan <1)
+
+        if(datespan <1 && the_date != 1)
         return 0;
 
         SendBigMessage(true, data);
