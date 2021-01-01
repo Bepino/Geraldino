@@ -56,7 +56,7 @@ function GetZupan(){
         let datespan = the_date - LastZupSent.getDate();
         console.log('Date.now():' + LastZupSent.getDate() + ' / Date.Json():' + the_date);
         console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-        if(datespan < 1)
+        if(datespan < 1 the_date != 1)
         return 0;
         
         SendBigMessage(false, data);
