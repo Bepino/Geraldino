@@ -52,7 +52,7 @@ function GetZupan(){
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         let Json_date = new Date(Date.parse(data[0].Datum));
         let datespan = Json_date.getDate() - LastZupSent.getDate();
-        console.log('Date.now():' + LastZupSent.getDate() + ' / Date.Json():' + Json_date.getDate());
+        console.log('Date.now():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
         console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
 
          //spaghetti fix
@@ -96,7 +96,7 @@ function GetGlobal(){
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
         let Json_date = new Date(Date.parse(data[0].Datum));
         let datespan = Json_date.getDate() - LastGlobSent.getDate();
-        console.log('Date.now():' + LastGlobSent.getDate() + ' / Date.Json():' + Json_date.getDate);
+        console.log('Date.now():' + LastGlobSent.getDate() + ' / Date.Json():' + Json_date.getDate());
         console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
         
         //spaghetti fix
