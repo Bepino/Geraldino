@@ -4,28 +4,26 @@ var Discord = require("discord.js");
 var client = new Discord.Client();
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+//Putting these vars here so they can be reset monthly to avoid -30 timespans
+var LastZupSent = new Date(Date.now());  //Zup var
+var LastGlobSent = new Date(Date.now());  //Glob var
+
 client.once('ready', () =>{
     console.log(`Ready as ${client.user.username}!`);
     GetGlobal();
     GetZupan();
-    setInterval(function(){GetGlobal(); GetZupan()}, 60*1000);
+    setInterval(function(){GetGlobal(); GetZupan()}, 60*1000);  // 1 minute interval
 });
 
 console.log(discord_token);
 client.login(discord_token);
+
 //Test command
 client.on('message', message => {
-
     if (message.content === 'ping') {
-
        message.reply('pong');
-
-       }
-
+    }
 });
-
-//Glob var
-var LastZupSent = new Date(Date.now());
 
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
@@ -52,23 +50,25 @@ function GetZupan(){
         }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        let the_date = new Date(Date.parse(data[0].Datum)).getDate();
-        let datespan = the_date - LastZupSent.getDate();
-        console.log('Date.now():' + LastZupSent.getDate() + ' / Date.Json():' + the_date);
+        let Json_date = new Date(Date.parse(data[0].Datum));
+        let datespan = Json_date.getDate() - LastZupSent.getDate();
+        console.log('Date.now():' + LastZupSent.getDate() + ' / Date.Json():' + Json_date.getDate());
         console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-        if(datespan < 1 && the_date != 1)
-        return 0;
-        
-        SendBigMessage(false, data);
-        }
+
+         //spaghetti fix
+         if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
+         {
+             if(datespan <1)
+                 return 0;
+         }
+ 
+         SendBigMessage(true, data);
+         }
     }; 
 
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
-
-//Glob var
-var LastGlobSent = new Date(Date.now());
 
 function GetGlobal(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
@@ -94,13 +94,17 @@ function GetGlobal(){
             }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        let the_date = new Date(Date.parse(data[0].Datum)).getDate();
-        let datespan = the_date - LastGlobSent.getDate();
-        console.log('Date.now():' + LastGlobSent.getDate() + ' / Date.Json():' + the_date);
+        let Json_date = new Date(Date.parse(data[0].Datum));
+        let datespan = Json_date.getDate() - LastGlobSent.getDate();
+        console.log('Date.now():' + LastGlobSent.getDate() + ' / Date.Json():' + Json_date.getDate);
         console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-
-        if(datespan <1 && the_date != 1)
-        return 0;
+        
+        //spaghetti fix
+        if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
+        {
+            if(datespan <1)
+                return 0;
+        }
 
         SendBigMessage(true, data);
         }
