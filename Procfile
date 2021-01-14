@@ -1,2 +1,2 @@
-worker: node glob.js
-worker: node zup.js
+web: node glob.js
+web: node zup.js
