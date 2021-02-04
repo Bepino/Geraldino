@@ -56,7 +56,7 @@ function GetZupan(){
         console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
 
         //spaghetti fix
-        if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
+        if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
         {
             console.log("(Zupanija) In the first hoop\n---------------------------------------")
             if(datespan <1){
@@ -115,6 +115,8 @@ function GetGlobal(){
         }
         
         console.log("(Hrvatska) passed hoop\n---------------------------------------")
+
+        SendBigMessage(false, data);
     }; 
 
     xmlhttp.open("GET", url, true);
@@ -124,7 +126,7 @@ function GetGlobal(){
 
 function SendBigMessage(flag, data){
     var send = 'Something broke with the machine: 500 (idk)';
-    if(flag){
+    if(!flag){
         LastGlobSent = new Date(Date.now());
 
         var morto = data[0].SlucajeviHrvatska - data[0].IzlijeceniHrvatska - data[0].UmrliHrvatska;
