@@ -1,2 +1,1 @@
-web: node glob.js
-wroker: node zup.js
+worker: node bot.js
