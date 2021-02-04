@@ -119,6 +119,7 @@ function GetGlobal(){
 
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
+    }
 }
 
 function SendBigMessage(flag, data){
@@ -172,4 +173,4 @@ function SendBigMessage(flag, data){
     //console.log(send + '\n---------------------------------------');
     client.channels.cache.get('459666776054169602').send(send);
     console.log(identifier + 'Sent message\n---------------------------------------');
-}
+    }
