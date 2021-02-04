@@ -58,10 +58,15 @@ function GetZupan(){
         //spaghetti fix
         if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
         {
-            if(datespan <1)
+            console.log("(Zupanija) In the first hoop\n---------------------------------------")
+            if(datespan <1){
+                console.log("(Zupanija) In the second hoop\n---------------------------------------")
                 return 0;
+            }
         }
- 
+        
+        console.log("(Zupanija) passed hoop\n---------------------------------------")
+
         SendBigMessage(true, data);
         }
     }; 
@@ -102,12 +107,14 @@ function GetGlobal(){
         //spaghetti fix
         if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
         {
-            if(datespan <1)
+            console.log("(Hrvatska) In the first hoop\n---------------------------------------")
+            if(datespan <1){
+                console.log("(Hrvatska) In the second hoop\n---------------------------------------")
                 return 0;
+            }
         }
-
-        SendBigMessage(true, data);
-        }
+        
+        console.log("(Hrvatska) passed hoop\n---------------------------------------")
     }; 
 
     xmlhttp.open("GET", url, true);
