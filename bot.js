@@ -99,6 +99,7 @@ function GetGlobal(){
             }];
 
         //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
+        console.log('(Hrvatksa)\n---------------------------------------')
         let Json_date = new Date(Date.parse(data[0].Datum));
         let datespan = Json_date.getDate() - LastGlobSent.getDate();
         console.log('Date.last():' + LastGlobSent.getDate() + ' / Date.Json():' + Json_date.getDate());
