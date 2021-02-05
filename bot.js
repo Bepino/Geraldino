@@ -5,8 +5,10 @@ var client = new Discord.Client();
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 //Putting these vars here so they can be reset monthly to avoid -30 timespans
-var LastZupSent = new Date(Date.now());  //Zup var
-var LastGlobSent = new Date(Date.now());  //Glob var
+var LastZupSent = new Date();  //Zup var
+LastZupSent.setDate(LastZupSent.getDate() - 1);
+var LastGlobSent = new Date();  //Glob var
+LastGlobSent.setDate(LastGlobSent.getDate() -1)
 
 client.once('ready', () =>{
     console.log(`Ready as ${client.user.username}!`);
@@ -30,49 +32,6 @@ function GetZupan(){
 
     console.log('(Zupanija )Getting list\n---------------------------------------');
 
-    //The part that activates when ever it feels like it.
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function(){
-    if (this.readyState == 4 && this.status == 200){
-        //console.log(this.responseText + '\n---------------------------------------');
-        var response = JSON.parse(this.responseText);
-        var data = [{
-            Datum : response[0].Datum,
-            Aktivni : response[0].PodaciDetaljno[19].broj_aktivni,
-            Umrli : response[0].PodaciDetaljno[19].broj_umrlih,
-            Zarazeni : response[0].PodaciDetaljno[19].broj_zarazenih
-        },{
-            Aktivni : response[1].PodaciDetaljno[19].broj_aktivni,
-            Umrli : response[1].PodaciDetaljno[19].broj_umrlih,
-            Zarazeni : response[1].PodaciDetaljno[19].broj_zarazenih
-        },{
-            Zarazeni : response[2].PodaciDetaljno[19].broj_zarazenih
-        }];
-
-        //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        let Json_date = new Date(Date.parse(data[0].Datum));
-        let datespan = Json_date.getDate() - LastZupSent.getDate();
-        console.log('Date.last():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
-        console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-
-        //spaghetti fix
-        if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
-        {
-            console.log("(Zupanija) In the first hoop\n---------------------------------------")
-            if(datespan <1){
-                console.log("(Zupanija) In the second hoop\n---------------------------------------")
-                return 0;
-            }
-        }
-        
-        console.log("(Zupanija) passed hoop\n---------------------------------------")
-
-        SendBigMessage(true, data);
-        }
-    }; 
-
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
 }
 
 function GetGlobal(){
@@ -80,49 +39,6 @@ function GetGlobal(){
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        //console.log(this.responseText + '\n---------------------------------------');
-        let response = JSON.parse(this.responseText);
-        var data = [{
-            SlucajeviHrvatska : response[0].SlucajeviHrvatska, 
-            UmrliHrvatska : response[0].UmrliHrvatska,
-            IzlijeceniHrvatska : response[0].IzlijeceniHrvatska,
-            Datum : response[0].Datum
-            },{
-            SlucajeviHrvatska : response[1].SlucajeviHrvatska, 
-            UmrliHrvatska : response[1].UmrliHrvatska,
-            IzlijeceniHrvatska : response[1].IzlijeceniHrvatska,
-            },{
-                SlucajeviHrvatska : response[2].SlucajeviHrvatska, 
-            }];
-
-        //If the time difference between now and JSON.date greater then 40s (40s past since JSON.date was created)
-        console.log('(Hrvatksa)\n---------------------------------------')
-        let Json_date = new Date(Date.parse(data[0].Datum));
-        let datespan = Json_date.getDate() - LastGlobSent.getDate();
-        console.log('Date.last():' + LastGlobSent.getDate() + ' / Date.Json():' + Json_date.getDate());
-        console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
-        
-        //spaghetti fix
-        if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
-        {
-            console.log("(Hrvatska) In the first hoop\n---------------------------------------")
-            if(datespan <1){
-                console.log("(Hrvatska) In the second hoop\n---------------------------------------")
-                return 0;
-            }
-        }
-        
-        console.log("(Hrvatska) passed hoop\n---------------------------------------")
-
-        SendBigMessage(false, data);
-    }; 
-
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    }
 }
 
 function SendBigMessage(flag, data){
