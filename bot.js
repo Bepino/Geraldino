@@ -55,6 +55,18 @@ function GetZupan(){
                     "Datum" : json[2].Datum
                 }
             ];
+            let Json_date = new Date(Date.parse(data[0].Datum));
+            let datespan = Json_date.getDate() - LastZupSent.getDate();
+            console.log('Date.last():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
+            console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+
+            //spaghetti fix
+            if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
+            {
+                if(datespan <1)
+                    return 0;
+            }
+
             SendBigMessage(true, data)
         }
     );
@@ -88,6 +100,19 @@ function GetGlobal(){
                     "Datum" : json[2].Datum
                 }
             ];
+
+            let Json_date = new Date(Date.parse(data[0].Datum));
+            let datespan = Json_date.getDate() - LastGlobSent.getDate();
+            console.log('Date.last():' + (LastGlobSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
+            console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+
+            //spaghetti fix
+            if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
+            {
+                if(datespan <1)
+                    return 0;
+            }
+
             SendBigMessage(false, data)
         }
     );
@@ -138,11 +163,11 @@ function SendBigMessage(flag, data){
         send = `**Županijske novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Aktivni}\n${Novozarazeni}\n${Umrli}`;
     }
 
-    var identifier = '(Zupanija)';
+    var identifier = '(Hrvatska)';
     if(flag)
-        identifier = '(Hrvatska)';
+        identifier = '(Zupanija)';
 
-    console.log(send + '\n---------------------------------------');
-    client.channels.cache.get('459666776054169602').send(send);
+    //console.log(send + '\n---------------------------------------');
+    //client.channels.cache.get('459666776054169602').send(send);
     console.log(identifier + ' Sent message\n---------------------------------------');
     }
