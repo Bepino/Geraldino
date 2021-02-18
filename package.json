@@ -27,5 +27,6 @@
   "homepage": "https://github.com/Bepino/Geraldino#readme",
   "engines": {
     "vscode": "^1.22.0"
-  }
+  },
+  "devDependencies": {}
 }
