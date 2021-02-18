@@ -6,9 +6,9 @@ const fetch = require('node-fetch');
 
 //Putting these vars here so they can be reset monthly to avoid -30 timespans
 var LastZupSent = new Date();  //Zup var
-LastZupSent.setDate(LastZupSent.getDate() - 1);
+LastZupSent.setDate(LastZupSent.getDate() );
 var LastGlobSent = new Date();  //Glob var
-LastGlobSent.setDate(LastGlobSent.getDate() -1)
+LastGlobSent.setDate(LastGlobSent.getDate() )
 
 client.once('ready', () =>{
     console.log(`Ready as ${client.user.username}!`);
@@ -168,6 +168,6 @@ function SendBigMessage(flag, data){
         identifier = '(Zupanija)';
 
     //console.log(send + '\n---------------------------------------');
-    //client.channels.cache.get('459666776054169602').send(send);
+    client.channels.cache.get('459666776054169602').send(send);
     console.log(identifier + ' Sent message\n---------------------------------------');
     }
