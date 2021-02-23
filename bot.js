@@ -20,13 +20,6 @@ client.once('ready', () =>{
 //console.log(discord_token);
 client.login(discord_token);
 
-//Test command
-client.on('message', message => {
-    if (message.content === 'ping') {
-       message.reply('pong');
-    }
-});
-
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
