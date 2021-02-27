@@ -25,7 +25,8 @@ function GetZupan(){
 
     console.log('(Zupanija )Getting list\n---------------------------------------');
 
-    fetch(url)
+    try{
+        fetch(url)
         .then(rsp => rsp.json())
         .then((json) => {
             const data = [
@@ -61,16 +62,16 @@ function GetZupan(){
             }
 
             SendBigMessage(true, data)
-        }
-    );
+        });
+    } catch (err) { console.log(err.message)}
 }
 
 function GetGlobal(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
-
-    fetch(url)
+    try {
+        fetch(url)
         .then(rsp => rsp.json())
         .then((json) => {
             const data = [
@@ -107,8 +108,9 @@ function GetGlobal(){
             }
 
             SendBigMessage(false, data)
-        }
-    );
+        });
+    }
+    catch(err) { console.log(err.message) }
 }
 
 function SendBigMessage(flag, data){
