@@ -2,9 +2,9 @@
   "name": "gerald",
   "version": "1.0.0",
   "description": "Geraldino botino packagino",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
-    "start": "index.js",
+    "start": "bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,8 +17,7 @@
   "author": "J.I (aka Bepino)",
   "dependencies": {
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
-    "xmlhttprequest": "^1.8.0"
+    "dotenv": "^8.2.0"
   },
   "license": "MIT",
   "bugs": {
