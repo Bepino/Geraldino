@@ -29,6 +29,9 @@ function GetZupan(){
         fetch(url)
         .then(rsp => rsp.json())
         .then((json) => {
+
+            console.log('----\n' + JSON.stringify(json));
+
             const data = [
                 {
                     "Zarazeni" : json[0].PodaciDetaljno[19].broj_zarazenih,
@@ -74,6 +77,9 @@ function GetGlobal(){
         fetch(url)
         .then(rsp => rsp.json())
         .then((json) => {
+
+            console.log('----\n' + JSON.stringify(json));
+
             const data = [
                 {
                     "SlucajeviHrvatska" : json[0].SlucajeviHrvatska,
