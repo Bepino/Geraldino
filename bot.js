@@ -23,50 +23,51 @@ client.login(discord_token);
 function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
-    console.log('(Zupanija )Getting list\n---------------------------------------');
+    console.log('(Zupanija) Getting list\n---------------------------------------');
 
     try{
         fetch(url)
-        .then(rsp => rsp.json())
-        .then((json) => {
+        .then(rsp => rsp.text())
+        .then(json => console.log(json));
+        // .then((json) => {
 
-            console.log('----\n' + JSON.stringify(json));
+        //     console.log('----\n' + JSON.stringify(json));
 
-            const data = [
-                {
-                    "Zarazeni" : json[0].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[0].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[0].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[0].Datum
-                },
-                {
-                    "Zarazeni" : json[1].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[1].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[1].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[1].Datum
-                },
-                {
-                    "Zarazeni" : json[2].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[2].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[2].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[2].Datum
-                }
-            ];
-            let Json_date = new Date(Date.parse(data[0].Datum));
-            let datespan = Json_date.getDate() - LastZupSent.getDate();
-            console.log('Date.last():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
-            console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+        //     const data = [
+        //         {
+        //             "Zarazeni" : json[0].PodaciDetaljno[19].broj_zarazenih,
+        //             "Aktivni" : json[0].PodaciDetaljno[19].broj_aktivni,
+        //             "Umrli" : json[0].PodaciDetaljno[19].broj_umrlih,
+        //             "Datum" : json[0].Datum
+        //         },
+        //         {
+        //             "Zarazeni" : json[1].PodaciDetaljno[19].broj_zarazenih,
+        //             "Aktivni" : json[1].PodaciDetaljno[19].broj_aktivni,
+        //             "Umrli" : json[1].PodaciDetaljno[19].broj_umrlih,
+        //             "Datum" : json[1].Datum
+        //         },
+        //         {
+        //             "Zarazeni" : json[2].PodaciDetaljno[19].broj_zarazenih,
+        //             "Aktivni" : json[2].PodaciDetaljno[19].broj_aktivni,
+        //             "Umrli" : json[2].PodaciDetaljno[19].broj_umrlih,
+        //             "Datum" : json[2].Datum
+        //         }
+        //     ];
+        //     let Json_date = new Date(Date.parse(data[0].Datum));
+        //     let datespan = Json_date.getDate() - LastZupSent.getDate();
+        //     console.log('Date.last():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
+        //     console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
 
-            //spaghetti fix
-            if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
-            {
-                if(datespan <1)
-                    return 0;
-            }
+        //     //spaghetti fix
+        //     if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
+        //     {
+        //         if(datespan <1)
+        //             return 0;
+        //     }
 
-            SendBigMessage(true, data)
-        });
-    } catch (err) { console.log(err.message)}
+        //     SendBigMessage(true, data)
+        // });
+    } catch (err) { console.log('(Zupanija) ' + err.message)}
 }
 
 function GetGlobal(){
@@ -76,47 +77,48 @@ function GetGlobal(){
     try {
         fetch(url)
         .then(rsp => rsp.json())
-        .then((json) => {
+        .then(json => console.log(json));
+        // .then((json) => {
 
-            console.log('----\n' + JSON.stringify(json));
+        //     console.log('----\n' + JSON.stringify(json));
 
-            const data = [
-                {
-                    "SlucajeviHrvatska" : json[0].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[0].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[0].UmrliHrvatska,
-                    "Datum" : json[0].Datum
-                },
-                {
-                    "SlucajeviHrvatska" : json[1].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[1].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[1].UmrliHrvatska,
-                    "Datum" : json[1].Datum
-                },
-                {
-                    "SlucajeviHrvatska" : json[2].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[2].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[2].UmrliHrvatska,
-                    "Datum" : json[2].Datum
-                }
-            ];
+        //     const data = [
+        //         {
+        //             "SlucajeviHrvatska" : json[0].SlucajeviHrvatska,
+        //             "IzlijeceniHrvatska" : json[0].IzlijeceniHrvatska,
+        //             "UmrliHrvatska" : json[0].UmrliHrvatska,
+        //             "Datum" : json[0].Datum
+        //         },
+        //         {
+        //             "SlucajeviHrvatska" : json[1].SlucajeviHrvatska,
+        //             "IzlijeceniHrvatska" : json[1].IzlijeceniHrvatska,
+        //             "UmrliHrvatska" : json[1].UmrliHrvatska,
+        //             "Datum" : json[1].Datum
+        //         },
+        //         {
+        //             "SlucajeviHrvatska" : json[2].SlucajeviHrvatska,
+        //             "IzlijeceniHrvatska" : json[2].IzlijeceniHrvatska,
+        //             "UmrliHrvatska" : json[2].UmrliHrvatska,
+        //             "Datum" : json[2].Datum
+        //         }
+        //     ];
 
-            let Json_date = new Date(Date.parse(data[0].Datum));
-            let datespan = Json_date.getDate() - LastGlobSent.getDate();
-            console.log('Date.last():' + (LastGlobSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
-            console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+        //     let Json_date = new Date(Date.parse(data[0].Datum));
+        //     let datespan = Json_date.getDate() - LastGlobSent.getDate();
+        //     console.log('Date.last():' + (LastGlobSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
+        //     console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
 
-            //spaghetti fix
-            if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
-            {
-                if(datespan <1)
-                    return 0;
-            }
+        //     //spaghetti fix
+        //     if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
+        //     {
+        //         if(datespan <1)
+        //             return 0;
+        //     }
 
-            SendBigMessage(false, data)
-        });
+        //     SendBigMessage(false, data)
+        // });
     }
-    catch(err) { console.log(err.message) }
+    catch(err) { console.log('(Hrvatska) ' + err.message) }
 }
 
 function SendBigMessage(flag, data){
