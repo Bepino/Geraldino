@@ -2,7 +2,7 @@ require('dotenv').config();
 const discord_token = process.env.discord_token;
 var Discord = require("discord.js");
 var client = new Discord.Client();
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 //Putting these vars here so they can be reset monthly to avoid -30 timespans
 var LastZupSent = new Date();  //Zup var
@@ -20,15 +20,14 @@ client.once('ready', () =>{
 //console.log(discord_token);
 client.login(discord_token);
 
-function GetZupan(){
+async function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
     console.log('(Zupanija) Getting list\n---------------------------------------');
 
     try{
-        fetch(url)
-        .then(rsp => rsp.text())
-        .then(json => console.log(json));
+        const resp = await axios.get(url);
+        console.log(resp);
         // .then((json) => {
 
         //     console.log('----\n' + JSON.stringify(json));
@@ -75,9 +74,9 @@ function GetGlobal(){
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
     try {
-        fetch(url)
-        .then(rsp => rsp.json())
-        .then(json => console.log(json));
+        // fetch(url)
+        // .then(rsp => rsp.json())
+        // .then(json => console.log(json));
         // .then((json) => {
 
         //     console.log('----\n' + JSON.stringify(json));
