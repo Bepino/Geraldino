@@ -1,8 +1,8 @@
 require('dotenv').config();
 const discord_token = process.env.discord_token;
-var Discord = require("discord.js");
-var client = new Discord.Client();
-const fetch = require('node-fetch');
+const { Client, Intents} = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const axios = require('axios');
 
 //Putting these vars here so they can be reset monthly to avoid -30 timespans
 var LastZupSent = new Date();  //Zup var
@@ -10,159 +10,104 @@ LastZupSent.setDate(LastZupSent.getDate() );
 var LastGlobSent = new Date();  //Glob var
 LastGlobSent.setDate(LastGlobSent.getDate() )
 
-client.once('ready', () =>{
-    console.log(`Ready as ${client.user.username}!`);
-    GetGlobal();
-    GetZupan();
-    setInterval(function(){GetGlobal(); GetZupan()}, 60*1000);  // 1 minute interval
+client.once('ready', () => {
+	console.log('Ready!');
+    // GetZupan();
+    // GetGlob();
+    //                                          5000
+    setInterval( ()=> {GetGlob(); GetZupan();}, 3600000)
 });
 
-//console.log(discord_token);
 client.login(discord_token);
 
-function GetZupan(){
+async function GetZupan(){
     var url = 'https://www.koronavirus.hr/json/?action=po_danima_zupanijama';
 
-    console.log('(Zupanija )Getting list\n---------------------------------------');
+    console.log('(Zupanija) Getting list\n---------------------------------------');
 
-    try{
-        fetch(url)
-        .then(rsp => rsp.json())
-        .then((json) => {
-            const data = [
-                {
-                    "Zarazeni" : json[0].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[0].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[0].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[0].Datum
-                },
-                {
-                    "Zarazeni" : json[1].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[1].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[1].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[1].Datum
-                },
-                {
-                    "Zarazeni" : json[2].PodaciDetaljno[19].broj_zarazenih,
-                    "Aktivni" : json[2].PodaciDetaljno[19].broj_aktivni,
-                    "Umrli" : json[2].PodaciDetaljno[19].broj_umrlih,
-                    "Datum" : json[2].Datum
-                }
-            ];
-            let Json_date = new Date(Date.parse(data[0].Datum));
-            let datespan = Json_date.getDate() - LastZupSent.getDate();
-            console.log('Date.last():' + (LastZupSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
-            console.log('(Zupanija) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+    axios.get(url)
+    .then(function (response) {
+        // handle success
+        let data = response.data;
 
-            //spaghetti fix
-            if(Json_date.getMonth() - LastZupSent.getMonth() == 0)
-            {
-                if(datespan <1)
-                    return 0;
-            }
-
-            SendBigMessage(true, data)
-        });
-    } catch (err) { console.log(err.message)}
+        let dataDate = new Date();
+        dataDate.setDate(data[0].Datum);
+        // SendBigMessage(data, false);
+        if(dataDate.getDate() - LastZupSent.getDate() > 0)
+        {
+            console.log('(Zupanija) Creating list\n---------------------------------------');
+            SendBigMessage(data, false);
+        }
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
 }
 
-function GetGlobal(){
+async function GetGlob(){
     var url = 'https://www.koronavirus.hr/json/?action=podaci';
 
     console.log('(Hrvatska) Getting list\n---------------------------------------');
-    try {
-        fetch(url)
-        .then(rsp => rsp.json())
-        .then((json) => {
-            const data = [
-                {
-                    "SlucajeviHrvatska" : json[0].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[0].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[0].UmrliHrvatska,
-                    "Datum" : json[0].Datum
-                },
-                {
-                    "SlucajeviHrvatska" : json[1].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[1].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[1].UmrliHrvatska,
-                    "Datum" : json[1].Datum
-                },
-                {
-                    "SlucajeviHrvatska" : json[2].SlucajeviHrvatska,
-                    "IzlijeceniHrvatska" : json[2].IzlijeceniHrvatska,
-                    "UmrliHrvatska" : json[2].UmrliHrvatska,
-                    "Datum" : json[2].Datum
-                }
-            ];
 
-            let Json_date = new Date(Date.parse(data[0].Datum));
-            let datespan = Json_date.getDate() - LastGlobSent.getDate();
-            console.log('Date.last():' + (LastGlobSent.getDate()) + ' / Date.Json():' + Json_date.getDate());
-            console.log('(Hrvatska) timespan is ' + datespan + ' day(s)\n---------------------------------------');
+    axios.get(url)
+    .then(function (response) {
+        // handle success
+        let data = response.data;
 
-            //spaghetti fix
-            if(Json_date.getMonth() - LastGlobSent.getMonth() == 0)
-            {
-                if(datespan <1)
-                    return 0;
-            }
-
-            SendBigMessage(false, data)
-        });
-    }
-    catch(err) { console.log(err.message) }
+        let dataDate = new Date();
+        dataDate.setDate(data[0].Datum);
+        // SendBigMessage(data, true);
+        if(dataDate.getDate() - LastZupSent.getDate() > 0)
+        {
+            console.log('(Hrvatska) Creating list\n---------------------------------------')
+            SendBigMessage(data, true);
+        }
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
 }
 
-function SendBigMessage(flag, data){
-    var send = 'Something broke with the machine: 500 (idk)';
-    if(!flag){
-        LastGlobSent = new Date(Date.now());
+async function SendBigMessage(data, flag) 
+{
+    if(!flag) {
+        let aktivniLine = `Aktivni: ${data[0].PodaciDetaljno[19].broj_aktivni} (${diff(data[0].PodaciDetaljno[19].broj_aktivni, data[1].PodaciDetaljno[19].broj_aktivni)})`
+        let NovozarazeniLine = `Novozarazeni: ${data[0].PodaciDetaljno[19].broj_zarazenih} (${diff(data[0].PodaciDetaljno[19].broj_zarazenih, data[1].PodaciDetaljno[19].broj_zarazenih)})`
+        let UmrliLine = `Umrli: ${data[0].PodaciDetaljno[19].broj_umrlih} (${diff(data[0].PodaciDetaljno[19].broj_umrlih, data[1].PodaciDetaljno[19].broj_umrlih)})`
 
-        var morto = data[0].SlucajeviHrvatska - data[0].IzlijeceniHrvatska - data[0].UmrliHrvatska;
+        let message = `**Zupanijski list ZADAR**\n---------------------\n*Izdanje:${data[0].Datum}*\n\n ${aktivniLine}\n ${NovozarazeniLine}\n ${UmrliLine}`;
 
-        var diffAktiv = morto - (data[1].SlucajeviHrvatska - data[1].IzlijeceniHrvatska - data[1].UmrliHrvatska);
-        if(diffAktiv > 0)
-            diffAktiv = '+' + diffAktiv.toString();
+        const channel = await client.channels.fetch('459666776054169602');
 
-        var diffnovo = (data[0].SlucajeviHrvatska - data[1].SlucajeviHrvatska) - (data[1].SlucajeviHrvatska - data[2].SlucajeviHrvatska);
-        if(diffnovo > 0)
-            diffnovo = '+' + diffnovo.toString();
-
-        var diffumrli = data[0].UmrliHrvatska - data[1].UmrliHrvatska;
-        if(diffumrli > 0)
-            diffumrli = '+' + diffumrli.toString();
-
-        var Aktivni = `Aktivni : ${morto} (${diffAktiv})`;
-        var Novozarazeni = `Novozarazeni : ${data[0].SlucajeviHrvatska - data[1].SlucajeviHrvatska} (${diffnovo})`;
-        var umrli = `Umrli : ${data[0].UmrliHrvatska} (${diffumrli})`;
-        send = `**Narodne Novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Novozarazeni}\n${Aktivni}\n${umrli}`;
+        await channel.send(message)
+        console.log('(Zupanija) Sent list\n---------------------------------------');
     }
-    else{
-        LastZupSent = new Date(Date.now());
+    else {
+        let aktivniLine = `Zaraženo: ${data[0].SlucajeviHrvatska}`
+            let tempUnoDay = diff(data[0].SlucajeviHrvatska, data[1].SlucajeviHrvatska);
+        let NovozarazeniLine = `Novozaraženi: ${tempUnoDay} (${diff(tempUnoDay, diff(data[1].SlucajeviHrvatska, data[2].SlucajeviHrvatska))})`;
+        let UmrliLine = `Umrli: ${data[0].UmrliHrvatska} (${diff(data[0].UmrliHrvatska, data[1].UmrliHrvatska)})`;
+        let CijepljeniLine = `Cijepljeni: \n  ├─ Bruto utrošene doze: ${data[0].CijepljenjeBrUtrosenihDoza} (${diff(data[0].CijepljenjeBrUtrosenihDoza, data[1].CijepljenjeBrUtrosenihDoza)})` +
+                            `\n  ├─ Prvom dozom: ${data[0].CijepljeniJednomDozom} (${diff(data[0].CijepljeniJednomDozom, data[1].CijepljeniJednomDozom)})` +
+                            `\n  ├─ Drugom dozom: ${data[0].CijepljeniDvijeDoze} (${diff(data[0].CijepljeniDvijeDoze, data[1].CijepljeniDvijeDoze)})` + 
+                            `\n  └─ Protekla 24 sata: ${data[0].CijepljeniUProtekla24} (${diff(data[0].CijepljeniUProtekla24, data[1].CijepljeniUProtekla24)})`;
+        let IzlijeceniLine = `Izliječeni: ${data[0].IzlijeceniHrvatska} (${diff(data[0].IzlijeceniHrvatska, data[1].IzlijeceniHrvatska)})`
 
-        var diffAktiv = data[0].Aktivni - data[1].Aktivni;
-        if(diffAktiv > 0)
-            diffAktiv = '+' + diffAktiv.toString();
+        let message = `**Narodni list HRVATISTAN**\n---------------------\n*Izdanje:${data[0].Datum}*\n\n ${aktivniLine}\n ${NovozarazeniLine}\n ${UmrliLine}\n ${CijepljeniLine}\n ${IzlijeceniLine}`;
 
-        var diffNovo = (data[0].Zarazeni - data[1].Zarazeni) - (data[1].Zarazeni - data[2].Zarazeni);
-        if(diffNovo > 0)
-            diffNovo = '+' + diffNovo.toString();
+        const channel = await client.channels.fetch('459666776054169602');
 
-        var diffUmrli = data[0].Umrli - data[1].Umrli;
-        if(diffUmrli > 0)
-            diffUmrli = '+' + diffUmrli.toString();
-
-        var Umrli = `Umrli : ${data[0].Umrli} (${diffUmrli})`;
-        var Novozarazeni = `Novozarazeni : ${data[0].Zarazeni - data[1].Zarazeni} (${diffNovo})`;        
-        var Aktivni = `Aktivni : ${data[0].Aktivni} (${diffAktiv})`;
-        send = `**Županijske novine izdanje : ${data[0].Datum.split(" ")[0]}**\n${Aktivni}\n${Novozarazeni}\n${Umrli}`;
+        await channel.send(message)
+        console.log('(Hrvatska) Sent list\n---------------------------------------')
     }
+}
 
-    var identifier = '(Hrvatska)';
-    if(flag)
-        identifier = '(Zupanija)';
-
-    //console.log(send + '\n---------------------------------------');
-    client.channels.cache.get('459666776054169602').send(send);
-    console.log(identifier + ' Sent message\n---------------------------------------');
-    }
+function diff(a, b) 
+{
+    if(a - b > 0)
+        return `+${a-b}`;
+    else
+        return `${a-b}`;
+}
