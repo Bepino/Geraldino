@@ -23,13 +23,13 @@ var Messages = [' nam se pridružio, imaš cedu pokraj šporeta.',
 let rNum = Math.floor((Math.random() * Messages.length) + 1);
 
 client.on('guildMemberAdd', function(member){
-    const channel = await client.channels.fetch('459666776054169602');
+    let channel = await client.channels.fetch('459666776054169602');
 
     await channel.send(`${member.user}` + Messages[rNum])
 });
 
 client.on("guildMemberRemove", function(member){
-    const channel = await client.channels.fetch('459666776054169602');
+    let channel = await client.channels.fetch('459666776054169602');
 
     await channel.send(`${member.displayName} pobiže on.`)
 });
