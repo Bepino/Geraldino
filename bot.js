@@ -25,11 +25,15 @@ let rNum = Math.floor((Math.random() * Messages.length) + 1);
 client.on('guildMemberAdd',async function(member){
     let channel = await client.channels.fetch('459666776054169602');
 
+    console.log('user joined')
+
     await channel.send(`${member.user}` + Messages[rNum])
 });
 
 client.on("guildMemberRemove",async function(member){
     let channel = await client.channels.fetch('459666776054169602');
+
+    console.log('user left')
 
     await channel.send(`${member.displayName} pobiže on.`)
 });
