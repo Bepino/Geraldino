@@ -12,10 +12,26 @@ LastGlobSent.setDate(LastGlobSent.getDate() )
 
 client.once('ready', () => {
 	console.log('Ready!');
-    // GetZupan();
-    // GetGlob();
-    //                                          5000
-    setInterval( ()=> {GetGlob(); GetZupan();}, 3600000)
+    // No more covid update, no worky on Heroku, don't care enough to fix for now.
+    //setInterval( ()=> {GetGlob(); GetZupan();}, 3600000)
+});
+
+var Messages = [' nam se pridružio, imaš cedu pokraj šporeta.',
+                ', sačekaj sekund, idem do tommya po pivicu.',
+                ' daj mi sekund, moran lasanje izvadit iz špakera'
+            ]
+let rNum = Math.floor((Math.random() * Messages.length) + 1);
+
+client.on('guildMemberAdd', function(member){
+    const channel = await client.channels.fetch('459666776054169602');
+
+    await channel.send(`${member.user}` + Messages[rNum])
+});
+
+client.on("guildMemberRemove", function(member){
+    const channel = await client.channels.fetch('459666776054169602');
+
+    await channel.send(`${member.displayName} pobiže on.`)
 });
 
 client.login(discord_token);

@@ -18,7 +18,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^12.5.3",
-    "dotenv": "^8.6.0"
+    "dotenv": "^8.6.0",
+    "math": "0.0.3"
   },
   "license": "MIT",
   "bugs": {
